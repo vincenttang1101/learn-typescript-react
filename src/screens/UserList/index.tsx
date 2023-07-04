@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import './styles.css';
 import rawUsers from '../../data/users.json';
 import { handleFilteredUsers, handleSearchedUsers, handleUsersIndexRange } from '../../utils';

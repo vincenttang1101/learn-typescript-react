@@ -26,9 +26,7 @@ export const handleFilteredUsers = (currentUsers: UserType[], type: string): Use
       );
       break;
     case 'birthday':
-      filteredUsers.sort(
-        (a, b) => dayjs(a.birthday, 'DD/MM/YYYY').valueOf() - dayjs(b.birthday, 'DD/MM/YYYY').valueOf()
-      );
+      filteredUsers.sort((a, b) => new Date(a.birthday).valueOf() - dayjs(b.birthday).valueOf());
       break;
     case 'salary':
       filteredUsers.sort((a, b) => a.salary - b.salary);
