@@ -8,7 +8,6 @@ export const handleFilteredUsers = (rawUsers: UserType[], currentUsers: UserType
     return email.split('@')[1].charAt(0);
   };
 
-  // bug with all when search
   let filteredUsers = [...currentUsers];
   switch (type) {
     case 'id':

@@ -7,7 +7,7 @@ interface Props {
 export const SelectField = ({ onFilteredClick }: Props) => {
   return (
     <Form.Select onChange={onFilteredClick}>
-      <option>Select field to sort</option>
+      <option value="">Select field to sort</option>
       <option value="id">Id</option>
       <option value="firstName">First Name</option>
       <option value="lastName">Last Name</option>

@@ -8,6 +8,7 @@ export default function UserList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentUsers, setCurrentUsers] = useState(rawUsers);
   const [displayedUsers, setDisplayedUsers] = useState(rawUsers.slice(0, 10));
+  const [searchTerm, setSearchTerm] = useState('!');
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const query = e.target.value;
@@ -19,6 +20,9 @@ export default function UserList() {
   const handleFilteredClick = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     const type = e.target.value;
     const filteredUsers = handleFilteredUsers(rawUsers, currentUsers, type);
+
+    type !== '' ? setSearchTerm('!') : setSearchTerm('');
+
     setCurrentUsers(filteredUsers);
     setDisplayedUsers(filteredUsers.slice(0, 10));
   };
@@ -32,7 +36,7 @@ export default function UserList() {
   return (
     <div className="container__userlist">
       <h2>User List</h2>
-      <Search onInputChange={handleSearchChange} />
+      <Search searchTerm={searchTerm} onInputChange={handleSearchChange} />
       <SelectField onFilteredClick={handleFilteredClick} />
       <UserTable
         displayedUsers={displayedUsers}

@@ -10,9 +10,14 @@ export const AddTodo = memo(({ onTodoAddClick }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleAddTodo = (): void => {
-    const newTitle = inputRef.current!.value;
-    onTodoAddClick(newTitle);
-    inputRef.current!.value = '';
+    const newTitle = inputRef.current?.value || '';
+    if (!newTitle) {
+      alert('Please enter value!');
+    } else {
+      onTodoAddClick(newTitle);
+      inputRef.current!.value = '';
+      inputRef.current!.focus();
+    }
   };
 
   return (
