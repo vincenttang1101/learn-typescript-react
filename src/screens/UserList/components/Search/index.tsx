@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import Form from 'react-bootstrap/Form';
 
 interface Props {
   searchTerm: string;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => any;
 }
-export const Search = ({ searchTerm, onInputChange }: Props) => {
+export const Search = memo(({ searchTerm, onInputChange }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -16,4 +16,4 @@ export const Search = ({ searchTerm, onInputChange }: Props) => {
   }, [searchTerm]);
 
   return <Form.Control ref={inputRef} type="text" placeholder="Search" onChange={onInputChange} />;
-};
+});

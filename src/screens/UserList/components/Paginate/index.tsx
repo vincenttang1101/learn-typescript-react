@@ -7,7 +7,7 @@ interface Props {
   isDisableNext: boolean;
 }
 
-export const Paginate = ({ onPaginateClick, isDisablePrev, isDisableNext }: Props) => {
+export const Paginate = memo(({ onPaginateClick, isDisablePrev, isDisableNext }: Props) => {
   return (
     <Pagination>
       <Pagination.Prev
@@ -19,4 +19,4 @@ export const Paginate = ({ onPaginateClick, isDisablePrev, isDisableNext }: Prop
       <Pagination.Next onClick={() => onPaginateClick('next')} disabled={isDisableNext} />
     </Pagination>
   );
-};
+});

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import './styles.css';
 import rawUsers from '../../data/users.json';
 import { handleFilteredUsers, handleSearchedUsers, handleUsersIndexRange } from '../../utils';
@@ -10,28 +10,39 @@ export default function UserList() {
   const [displayedUsers, setDisplayedUsers] = useState(rawUsers.slice(0, 10));
   const [searchTerm, setSearchTerm] = useState('!');
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const query = e.target.value;
-    const searchedUsers = handleSearchedUsers(rawUsers, query);
-    setCurrentUsers(searchedUsers);
-    setDisplayedUsers(searchedUsers.slice(0, 10));
-  };
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
+      const query = e.target.value;
+      const searchedUsers = handleSearchedUsers(rawUsers, query);
+      setCurrentPage(1);
+      setCurrentUsers(searchedUsers);
+      setDisplayedUsers(searchedUsers.slice(0, 10));
+    },
+    [currentUsers]
+  );
 
-  const handleFilteredClick = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    const type = e.target.value;
-    const filteredUsers = handleFilteredUsers(rawUsers, currentUsers, type);
+  const handleFilteredClick = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>): void => {
+      const type = e.target.value;
+      const filteredUsers = handleFilteredUsers(rawUsers, currentUsers, type);
 
-    type !== '' ? setSearchTerm('!') : setSearchTerm('');
+      type !== '' ? setSearchTerm('!') : setSearchTerm('');
 
-    setCurrentUsers(filteredUsers);
-    setDisplayedUsers(filteredUsers.slice(0, 10));
-  };
+      setCurrentPage(1);
+      setCurrentUsers(filteredUsers);
+      setDisplayedUsers(filteredUsers.slice(0, 10));
+    },
+    [currentUsers]
+  );
 
-  const handlePaginatedClick = (type: string): void => {
-    const [newPage, newUsersPerPage] = handleUsersIndexRange(type, currentPage, currentUsers);
-    setCurrentPage(newPage);
-    setDisplayedUsers(newUsersPerPage);
-  };
+  const handlePaginatedClick = useCallback(
+    (type: string): void => {
+      const [newPage, newUsersPerPage] = handleUsersIndexRange(type, currentPage, currentUsers);
+      setCurrentPage(newPage);
+      setDisplayedUsers(newUsersPerPage);
+    },
+    [currentPage, displayedUsers]
+  );
 
   return (
     <div className="container__userlist">
@@ -45,7 +56,7 @@ export default function UserList() {
       <Paginate
         onPaginateClick={handlePaginatedClick}
         isDisablePrev={currentPage === 1}
-        isDisableNext={Math.ceil(currentUsers.length / 10) === currentPage}
+        isDisableNext={currentUsers.length === 0 || Math.ceil(currentUsers.length / 10) === currentPage}
       />
     </div>
   );
