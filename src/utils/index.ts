@@ -3,13 +3,13 @@ import { UserType } from '../models';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
-export const handleFilteredUsers = (currentUsers: UserType[], type: string): UserType[] => {
+export const handleFilteredUsers = (rawUsers: UserType[], currentUsers: UserType[], type: string): UserType[] => {
   const handleSortEmail = (email: string) => {
     return email.split('@')[1].charAt(0);
   };
 
+  // bug with all when search
   let filteredUsers = [...currentUsers];
-
   switch (type) {
     case 'id':
       filteredUsers.sort((a, b) => a.id - b.id);
@@ -32,7 +32,7 @@ export const handleFilteredUsers = (currentUsers: UserType[], type: string): Use
       filteredUsers.sort((a, b) => a.salary - b.salary);
       break;
     default:
-      break;
+      return rawUsers;
   }
 
   return filteredUsers;

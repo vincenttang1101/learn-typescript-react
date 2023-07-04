@@ -18,12 +18,12 @@ export default function UserList() {
 
   const handleFilteredClick = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     const type = e.target.value;
-    const filteredUsers = handleFilteredUsers(currentUsers, type);
+    const filteredUsers = handleFilteredUsers(rawUsers, currentUsers, type);
     setCurrentUsers(filteredUsers);
     setDisplayedUsers(filteredUsers.slice(0, 10));
   };
 
-  const handlePaginateClick = (type: string): void => {
+  const handlePaginatedClick = (type: string): void => {
     const [newPage, newUsersPerPage] = handleUsersIndexRange(type, currentPage, currentUsers);
     setCurrentPage(newPage);
     setDisplayedUsers(newUsersPerPage);
@@ -39,7 +39,7 @@ export default function UserList() {
         columns={['Id', 'First Name', 'Last Name', 'Email', 'Gender', 'Birthday', 'Salary', 'Phone']}
       />
       <Paginate
-        onPaginateClick={handlePaginateClick}
+        onPaginateClick={handlePaginatedClick}
         isDisablePrev={currentPage === 1}
         isDisableNext={Math.ceil(currentUsers.length / 10) === currentPage}
       />
