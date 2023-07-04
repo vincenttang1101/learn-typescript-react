@@ -9,12 +9,12 @@ export default function UserList() {
   const [currentUsers, setCurrentUsers] = useState(rawUsers);
   const [displayedUsers, setDisplayedUsers] = useState(rawUsers.slice(0, 10));
 
-  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const query = e.target.value;
     const searchedUsers = handleSearchedUsers(rawUsers, query);
     setCurrentUsers(searchedUsers);
     setDisplayedUsers(searchedUsers.slice(0, 10));
-  }, []);
+  };
 
   const handleFilteredClick = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     const type = e.target.value;
@@ -23,14 +23,11 @@ export default function UserList() {
     setDisplayedUsers(filteredUsers.slice(0, 10));
   };
 
-  const handlePaginateClick = useCallback(
-    (type: string): void => {
-      const [newPage, newUsersPerPage] = handleUsersIndexRange(type, currentPage, currentUsers);
-      setCurrentPage(newPage);
-      setDisplayedUsers(newUsersPerPage);
-    },
-    [currentPage]
-  );
+  const handlePaginateClick = (type: string): void => {
+    const [newPage, newUsersPerPage] = handleUsersIndexRange(type, currentPage, currentUsers);
+    setCurrentPage(newPage);
+    setDisplayedUsers(newUsersPerPage);
+  };
 
   return (
     <div className="container__userlist">
