@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 interface Props {
   onFilteredClick: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
-export const SelectField = memo(({ onFilteredClick }: Props) => {
+export const SelectField = ({ onFilteredClick }: Props) => {
   return (
     <Form.Select onChange={onFilteredClick}>
       <option>Select field to sort</option>
@@ -16,4 +16,4 @@ export const SelectField = memo(({ onFilteredClick }: Props) => {
       <option value="salary">Salary</option>
     </Form.Select>
   );
-});
+};

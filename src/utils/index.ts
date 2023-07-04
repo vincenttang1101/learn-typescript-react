@@ -52,8 +52,6 @@ export const handleSearchedUsers = (rawUsers: UserType[], query: string): UserTy
       user.firstName.toLowerCase().includes(query) ||
       user.lastName.toLowerCase().includes(query) ||
       user.email.toLowerCase().includes(query) ||
-      user.gender.toLowerCase().includes(query) ||
-      dayjs(user.birthday, 'DD/MM/YYYY').valueOf() === dayjs(query, 'DD/MM/YYYY').valueOf() ||
       user.salary.toString() === query ||
       user.phone.toString() === query
     );
