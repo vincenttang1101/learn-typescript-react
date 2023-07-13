@@ -1,14 +1,7 @@
 import './App.css';
-import TodoList from './screens/TodoList';
-import UserList from './screens/UserList';
 
 function App() {
-  return (
-    <div className="container__app">
-      <UserList />
-      <TodoList />
-    </div>
-  );
+  return <div className="container__app"></div>;
 }
 
 export default App;
