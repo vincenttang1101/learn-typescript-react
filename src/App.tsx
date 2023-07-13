@@ -1,4 +1,3 @@
-import React from 'react';
 import './App.css';
 import TodoList from './screens/TodoList';
 import UserList from './screens/UserList';

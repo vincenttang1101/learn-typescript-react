@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import Pagination from 'react-bootstrap/Pagination';
 
 interface Props {

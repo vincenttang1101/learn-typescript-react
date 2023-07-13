@@ -1,24 +1,29 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import './styles.css';
 import rawUsers from '../../data/users.json';
 import { handleFilteredUsers, handleSearchedUsers, handleUsersIndexRange } from '../../utils';
 import { Search, SelectField, UserTable, Paginate } from './components';
 
 export default function UserList() {
-  const [currentPage, setCurrentPage] = useState(1);
   const [currentUsers, setCurrentUsers] = useState(rawUsers);
+  const [currentPage, setCurrentPage] = useState(1);
   const [displayedUsers, setDisplayedUsers] = useState(rawUsers.slice(0, 10));
   const [searchTerm, setSearchTerm] = useState('!');
+  const [filteredType, setFilteredType] = useState<any>(); // Để fix lỗi filteredType: keyof UserType được truyền vào utils/index.ts
 
-  const handleSearchChange = useCallback(
+  const usersPerpage = 10;
+
+  const handleSearchedChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
       const query = e.target.value;
-      const searchedUsers = handleSearchedUsers(rawUsers, query);
+
+      const searchedUsers = handleSearchedUsers(rawUsers, query, filteredType);
+
       setCurrentPage(1);
       setCurrentUsers(searchedUsers);
       setDisplayedUsers(searchedUsers.slice(0, 10));
     },
-    [currentUsers]
+    [filteredType]
   );
 
   const handleFilteredClick = useCallback(
@@ -26,28 +31,29 @@ export default function UserList() {
       const type = e.target.value;
       const filteredUsers = handleFilteredUsers(rawUsers, currentUsers, type);
 
-      type !== '' ? setSearchTerm('!') : setSearchTerm('');
+      type !== '' ? setSearchTerm('!') : setSearchTerm(''); // reset search-input
 
       setCurrentPage(1);
       setCurrentUsers(filteredUsers);
       setDisplayedUsers(filteredUsers.slice(0, 10));
+      setFilteredType(type);
     },
     [currentUsers]
   );
 
   const handlePaginatedClick = useCallback(
     (type: string): void => {
-      const [newPage, newUsersPerPage] = handleUsersIndexRange(type, currentPage, currentUsers);
+      const [newPage, newUsersPerPage] = handleUsersIndexRange(type, usersPerpage, currentPage, currentUsers);
       setCurrentPage(newPage);
       setDisplayedUsers(newUsersPerPage);
     },
-    [currentPage, displayedUsers]
+    [currentPage, currentUsers]
   );
 
   return (
     <div className="container__userlist">
       <h2>User List</h2>
-      <Search searchTerm={searchTerm} onInputChange={handleSearchChange} />
+      <Search searchTerm={searchTerm} onInputChange={handleSearchedChange} />
       <SelectField onFilteredClick={handleFilteredClick} />
       <UserTable
         displayedUsers={displayedUsers}

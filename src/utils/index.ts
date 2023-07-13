@@ -1,4 +1,3 @@
-import React from 'react';
 import { UserType } from '../models';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -37,31 +36,40 @@ export const handleFilteredUsers = (rawUsers: UserType[], currentUsers: UserType
   return filteredUsers;
 };
 
-export const handleSearchedUsers = (rawUsers: UserType[], query: string): UserType[] => {
+export const handleSearchedUsers = (rawUsers: UserType[], query: string, filteredType: keyof UserType): UserType[] => {
   dayjs.extend(customParseFormat);
   const currentUsersClone = [...rawUsers];
-  const searchedUsers = currentUsersClone.filter((user) => {
-    query = query.toLowerCase();
+  const searchedUsers = currentUsersClone
+    .filter((user) => {
+      query = query.toLowerCase();
 
-    // bug birthday
-    return (
-      user.id.toString() === query ||
-      user.firstName.toLowerCase().includes(query) ||
-      user.lastName.toLowerCase().includes(query) ||
-      user.email.toLowerCase().includes(query) ||
-      user.salary.toString() === query ||
-      user.phone.toString() === query
-    );
-  });
+      return (
+        user.id.toString() === query ||
+        user.firstName.toLowerCase().includes(query) ||
+        user.lastName.toLowerCase().includes(query) ||
+        user.email.toLowerCase().includes(query) ||
+        user.salary.toString() === query ||
+        user.phone.toString() === query
+      );
+    })
+    .sort((a, b) => {
+      if (a[filteredType] < b[filteredType]) {
+        return -1;
+      }
+      if (a[filteredType] > b[filteredType]) {
+        return 1;
+      }
+      return 0;
+    });
   return searchedUsers;
 };
 
 export const handleUsersIndexRange = (
   type: string,
+  usersPerpage: number,
   currentPage: number,
   currentUsers: UserType[]
 ): [number, UserType[]] => {
-  const usersPerpage = 10;
   const indexOfLastUser = type === 'next' ? (currentPage + 1) * usersPerpage : (currentPage - 1) * usersPerpage;
   const indexOfFirstUser = indexOfLastUser - usersPerpage;
 
