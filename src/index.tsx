@@ -4,14 +4,31 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { AlbumList } from './Components/AlbumList';
+import { AlbumItem } from './Components/AlbumItem';
 
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    children: [
+      {
+        path: '/albums',
+        element: <AlbumList />,
+      },
+      {
+        path: 'albums/:albumId',
+        element: <AlbumItem />,
+      },
+    ],
+  },
+]);
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
