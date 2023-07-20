@@ -19,7 +19,7 @@ function App() {
         <nav>
           <ul>
             <li>
-              <Link to={`/album`}>Album</Link>
+              <Link to={`/albums`}>Album</Link>
             </li>
             <li>
               <a href={`/contacts/2`}>Your Friend</a>
