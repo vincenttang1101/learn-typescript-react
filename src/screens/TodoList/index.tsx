@@ -1,72 +1,55 @@
 import { useCallback, useEffect, useState } from 'react';
 import './styles.css';
 import { AddTodo, TodoItem } from './components';
-import { TodoType } from '../../models';
+import { TodoType } from '../../types';
+import { RootState } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTodo, deleteTodo, editTodo } from './components/AddTodo/addTodoSlice';
+import { getTodosFromLocalStorage } from '../../constants';
 
 export default function TodoList() {
-  const [todos, setTodos] = useState<TodoType[]>([]);
+  const todos = useSelector((state: RootState) => state.todo.todos);
+  const dispatch = useDispatch();
 
-  const handleAddTodoClick = useCallback((newTitle: string): void => {
-    const storedTodos = localStorage.getItem('todos');
-    const todosFromLocalStorage = storedTodos ? JSON.parse(storedTodos) : [];
-
+  const handleAddTodoClick = (newTitle: string): void => {
     const newTodoItem: TodoType = {
-      id: todosFromLocalStorage.length + 1,
+      id: todos.length + 1,
       title: newTitle,
       isCompleted: false,
     };
-    const newTodos = [...todosFromLocalStorage, newTodoItem];
-    localStorage.setItem('todos', JSON.stringify(newTodos));
-
-    setTodos(newTodos);
-  }, []);
+    dispatch(addTodo(newTodoItem));
+  };
 
   const handleActiveTodoClick = (id: number): void => {
-    const newTodos = [...todos];
-    const todoIdx = todos.findIndex((todo) => todo.id === id);
-
-    newTodos[todoIdx] = {
-      ...newTodos[todoIdx],
-      isCompleted: !newTodos[todoIdx].isCompleted,
-    };
-
-    localStorage.setItem('todos', JSON.stringify(newTodos));
-    setTodos(newTodos);
+    // const newTodos = [...todos];
+    // const todoIdx = todos.findIndex((todo) => todo.id === id);
+    // newTodos[todoIdx] = {
+    //   ...newTodos[todoIdx],
+    //   isCompleted: !newTodos[todoIdx].isCompleted,
+    // };
+    // localStorage.setItem('todos', JSON.stringify(newTodos));
+    // setTodos(newTodos);
   };
 
   const handleEditTodoClick = (id: number, title: string): void => {
-    const newTodos = [...todos];
-    const todoIdx = todos.findIndex((todo) => todo.id === id);
-
-    newTodos[todoIdx] = {
-      ...newTodos[todoIdx],
-      title: title,
-    };
-
-    localStorage.setItem('todos', JSON.stringify(newTodos));
-    setTodos(newTodos);
+    const todo = todos.filter((todo) => todo.id === id);
+    dispatch(editTodo({ ...todo[0], title }));
   };
 
   const handleRemoveTodoClick = (id: number): void => {
-    const newTodos = [...todos];
-    const removeTodo = newTodos.filter((todo) => todo.id !== id);
-
-    localStorage.setItem('todos', JSON.stringify(removeTodo));
-    setTodos(removeTodo);
+    dispatch(deleteTodo(id));
   };
 
   useEffect(() => {
-    const storedTodos = localStorage.getItem('todos');
-    const todosFromLocalStorage = storedTodos ? JSON.parse(storedTodos) : [];
-    setTodos(todosFromLocalStorage);
+    const todosFromLocalStorage = getTodosFromLocalStorage('todos');
   }, []);
-
+  console.log('re-render');
   return (
     <div className="container__todolist">
       <h2>Todo List</h2>
       <AddTodo onTodoAddClick={handleAddTodoClick} />
       <div className="todo__list">
-        {todos.map((todo) => (
+        {todos.map((todo: any) => (
           <TodoItem
             key={todo.id}
             todo={todo}

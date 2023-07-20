@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
-import { TodoType } from '../../../../models';
+import { TodoType } from '../../../../types';
 import './styles.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
