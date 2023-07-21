@@ -9,3 +9,7 @@
   align-items: baseline;
   gap: 1rem;
 }
+
+p {
+  cursor: pointer;;
+}

@@ -2,14 +2,14 @@ import { useRef, useState } from 'react';
 
 import { TodoType } from '../../../../types';
 import './styles.css';
-import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 interface Props {
   todo: TodoType;
-  onActiveTodoClick: (id: number) => void;
-  onEditTodoClick: (id: number, title: string) => void;
-  onRemoveTodoClick: (id: number) => void;
+  onActiveTodoClick: (id: string) => void;
+  onEditTodoClick: (id: string, title: string) => void;
+  onRemoveTodoClick: (id: string) => void;
 }
 
 export function TodoItem({ todo, onActiveTodoClick, onEditTodoClick, onRemoveTodoClick }: Props) {
@@ -26,7 +26,7 @@ export function TodoItem({ todo, onActiveTodoClick, onEditTodoClick, onRemoveTod
     }
   };
 
-  const handleToggleRemoveCancel = (id: number): void => {
+  const handleToggleRemoveCancel = (id: string): void => {
     if (!isEditing) {
       onRemoveTodoClick(id);
     } else {

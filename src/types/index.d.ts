@@ -1,5 +1,5 @@
 export interface TodoType {
-  id: number;
+  id: string;
   title: string;
   isCompleted: boolean;
 }
