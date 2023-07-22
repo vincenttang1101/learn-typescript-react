@@ -1,13 +1,14 @@
+import { useEffect } from 'react';
 import './styles.css';
 import { AddTodo, TodoItem } from './components';
 import { TodoType } from '../../types';
 import { RootState } from '../../app/store';
-import { activeTodo, addTodo, deleteTodo, editTodo } from './components/todoSlice';
-import { useAppDispatch, useAppSelector } from '@app/hook';
+import { fetchTodos, activeTodo, addTodo, deleteTodo, editTodo } from './components/todoSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { nanoid } from '@reduxjs/toolkit';
 
 export default function TodoList() {
-  const todos = useAppSelector((state: RootState) => state.todo.todos);
+  const todos: TodoType[] = useAppSelector((state: RootState) => state.todo.todos);
   const dispatch = useAppDispatch();
 
   const handleAddTodoClick = (newTitle: string): void => {
@@ -33,6 +34,9 @@ export default function TodoList() {
     dispatch(deleteTodo(id));
   };
 
+  useEffect(() => {
+    dispatch(fetchTodos());
+  }, []);
   return (
     <div className="container__todoList">
       <h2>Todo List</h2>
