@@ -18,7 +18,7 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
   res.status(500).json({ message: err.message })
 })
 
-db.connect('mongodb+srv://tangtrinhquang:6yR32rfdEpgLrard@cluster0.s4xrmem.mongodb.net/')
+db.connect('')
   .then(() => console.log('Connected DB'))
   .catch((err) => console.log(err))
 
